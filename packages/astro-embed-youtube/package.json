@@ -1,5 +1,5 @@
 {
-  "name": "@astro-community/astro-embed-youtube",
+  "name": "@coderty/astro-embed-youtube",
   "version": "0.5.9",
   "description": "(Coderty Fork) - Component to easily embed YouTube videos on your Astro site",
   "type": "module",
