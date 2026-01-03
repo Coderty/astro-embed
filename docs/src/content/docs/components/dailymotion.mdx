@@ -1,0 +1,105 @@
+---
+title: Dailymotion
+description: Learn how to use the Astro Embed Dailymotion component to embed Dailymotion videos in your website
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+import { Dailymotion } from '@coderty/astro-embed-dailymotion';
+
+The `<Dailymotion>` component generates an embed using a lightweight custom element that will load Dailymotion's `<iframe>` only when a user clicks play.
+
+Dailymotion embeds will always require some JavaScript, but this is one of the most minimal and performant ways to embed a Dailymotion video.
+
+## Usage
+
+<Tabs>
+<TabItem label="Astro" icon="astro">
+```astro
+---
+import { Dailymotion } from 'astro-embed';
+---
+
+<Dailymotion id="x8oz9jd" />
+```
+</TabItem>
+<TabItem label="MDX" icon="seti:markdown">
+```astro
+import { Dailymotion } from 'astro-embed';
+
+<Dailymotion id="x8oz9jd" />
+```
+</TabItem>
+</Tabs>
+
+You can also pass in the full URL for the video:
+
+```astro
+<Dailymotion id="https://www.dailymotion.com/video/x8oz9jd" />
+```
+
+Or the short `dai.ly` URL:
+
+```astro
+<Dailymotion id="https://dai.ly/x8oz9jd" />
+```
+
+The above code produces the following result:
+
+<Dailymotion id="x8oz9jd" />
+
+## Optional props
+
+In addition to the required `id` prop, the following props are available to customise how the `<Dailymotion>` component renders:
+
+### `poster`
+
+**Type:** `string`
+
+You can provide an alternative poster image by passing in a URL to the `poster` prop.
+
+For example, this is the same video as above but with a custom poster image:
+
+```astro
+<Dailymotion
+	id="x8oz9jd"
+	poster="https://example.com/custom-poster.jpg"
+/>
+```
+
+### `params`
+
+You can pass a `params` prop to set the [player parameters supported by Dailymotion](https://developers.dailymotion.com/player/#player-parameters). This looks like a series of URL search params.
+
+For example, the following `params` value mutes the audio by default:
+
+```astro
+<Dailymotion id="x8oz9jd" params="mute=1" />
+```
+
+<Dailymotion id="x8oz9jd" params="mute=1" />
+
+### `playlabel`
+
+**Type:** `string`  
+**Default:** `'Play'`
+
+By default, the play button in the embed has an accessible label set to "Play".
+If you want to customise this, for example to match the language of your website, you can set the `playlabel` prop:
+
+```astro
+<Dailymotion id="x8oz9jd" playlabel="Reproducir el video" />
+```
+
+## Standalone installation
+
+If you only need the `<Dailymotion>` component, you can install the package directly instead of the main `astro-embed` package:
+
+import { PackageManagers } from 'starlight-package-managers';
+
+<PackageManagers pkg="@coderty/astro-embed-dailymotion" />
+
+The `<Dailymotion>` component can then be imported as:
+
+```js
+import { Dailymotion } from '@coderty/astro-embed-dailymotion';
+```

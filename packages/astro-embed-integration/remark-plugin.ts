@@ -3,6 +3,7 @@ import blueskyMatcher from '@astro-community/astro-embed-bluesky/matcher';
 import twitterMatcher from '@astro-community/astro-embed-twitter/matcher';
 import vimeoMatcher from '@astro-community/astro-embed-vimeo/matcher';
 import youtubeMatcher from '@astro-community/astro-embed-youtube/matcher';
+import dailymotionMatcher from '@coderty/astro-embed-dailymotion/matcher';
 import linkPreviewMatcher from '@astro-community/astro-embed-link-preview/matcher';
 
 const matchers = [
@@ -10,6 +11,7 @@ const matchers = [
 	[twitterMatcher, 'Tweet'],
 	[vimeoMatcher, 'Vimeo'],
 	[youtubeMatcher, 'YouTube'],
+	[dailymotionMatcher, 'Dailymotion'],
 	/** The generic link matcher must be last otherwise it will override other URLs. */
 	[linkPreviewMatcher, 'LinkPreview'],
 ] as const;

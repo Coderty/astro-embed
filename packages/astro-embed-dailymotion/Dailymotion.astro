@@ -1,0 +1,135 @@
+---
+import urlMatcher from './matcher';
+import './Dailymotion.css';
+
+export interface Props extends astroHTML.JSX.HTMLAttributes {
+	/** Dailymotion video ID or URL. */
+	id: string;
+	/** URL to an image to use as the poster instead of the default thumbnail. */
+	poster?: string;
+	/** See https://developers.dailymotion.com/player/#player-parameters */
+	params?: string;
+	/** Label for the button that will play the video. Default label: `'Play'` */
+	playlabel?: string;
+}
+
+const {
+	id,
+	poster,
+	params = '',
+	playlabel = 'Play',
+	style,
+	...attrs
+} = Astro.props as Props;
+
+const idRegExp = /^[a-zA-Z0-9]+$/;
+
+function extractID(idOrUrl: string) {
+	if (idRegExp.test(idOrUrl)) return idOrUrl;
+	return urlMatcher(idOrUrl);
+}
+
+const videoid = extractID(id);
+// Dailymotion thumbnail URL pattern
+const posterURL = poster || `https://www.dailymotion.com/thumbnail/video/${videoid}`;
+
+const searchParams = new URLSearchParams(params);
+searchParams.append('autoplay', '1');
+
+const styles = [];
+if (style) styles.push(style);
+if (posterURL) styles.push(`background-image: url('${posterURL}')`);
+---
+
+<lite-dailymotion
+	data-id={videoid}
+	data-params={searchParams.toString()}
+	style={styles.join(';')}
+	{...attrs}
+>
+	<a
+		class="ltd-playbtn"
+		href={`https://www.dailymotion.com/video/${videoid}`}
+		aria-label={playlabel}></a>
+</lite-dailymotion>
+
+<script>
+	class LiteDailymotion extends HTMLElement {
+		// Gotta encode the untrusted value to prevent XSS.
+		videoId = encodeURIComponent(this.dataset.id!);
+		static preconnected = false;
+
+		connectedCallback() {
+			// On hover (or tap), warm up the TCP connections we're (likely) about to use.
+			this.addEventListener('pointerover', LiteDailymotion.warmConnections, {
+				once: true,
+			});
+
+			// Once the user clicks, add the real iframe and drop our play button
+			this.addEventListener('click', (e) => this.addIframe(e));
+
+			// Progressively enhance the link to the Dailymotion as a play button.
+			const playLink = this.querySelector('a');
+			if (playLink) {
+				const playBtn = document.createElement('button');
+				playBtn.classList.add(...playLink.classList.values());
+				playBtn.setAttribute(
+					'aria-label',
+					playLink.getAttribute('aria-label')!
+				);
+				playLink.replaceWith(playBtn);
+			}
+		}
+
+		/**
+		 * Add a <link rel={preload | preconnect} ...> to the head
+		 */
+		static addPrefetch(rel: string, url: string): void {
+			const linkEl = document.createElement('link');
+			linkEl.rel = rel;
+			linkEl.href = url;
+			document.head.append(linkEl);
+		}
+
+		/**
+		 * Begin pre-connecting to warm up the iframe load
+		 * Since the embed's network requests load within its iframe,
+		 *   preload/prefetch'ing them outside the iframe will only cause double-downloads.
+		 * So, the best we can do is warm up a few connections to origins that are in the critical path.
+		 */
+		static warmConnections(): void {
+			if (LiteDailymotion.preconnected) return;
+
+			// The iframe document and most of its subresources come right off www.dailymotion.com
+			LiteDailymotion.addPrefetch('preconnect', 'https://www.dailymotion.com');
+			// Player resources
+			LiteDailymotion.addPrefetch('preconnect', 'https://geo.dailymotion.com');
+			// Static resources
+			LiteDailymotion.addPrefetch('preconnect', 'https://static1.dmcdn.net');
+
+			LiteDailymotion.preconnected = true;
+		}
+
+		addIframe(e: MouseEvent): void {
+			if (this.classList.contains('ltd-activated')) return;
+			e.preventDefault();
+			this.classList.add('ltd-activated');
+
+			const params = new URLSearchParams(this.dataset.params || []);
+
+			const iframeEl = document.createElement('iframe');
+			iframeEl.width = '640';
+			iframeEl.height = '360';
+			iframeEl.allow =
+				'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+			iframeEl.allowFullscreen = true;
+			iframeEl.src = `https://www.dailymotion.com/embed/video/${this.videoId}?${params.toString()}`;
+			this.append(iframeEl);
+		}
+	}
+
+	// Register custom element
+	if (!customElements.get('lite-dailymotion')) {
+		customElements.define('lite-dailymotion', LiteDailymotion);
+	}
+</script>
