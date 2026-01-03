@@ -1,0 +1,77 @@
+lite-dailymotion {
+	font-size: 10px;
+	background-color: #000;
+	position: relative;
+	display: block;
+	contain: content;
+	background-position: center center;
+	background-size: cover;
+}
+
+/* responsive iframe with a 16:9 aspect ratio
+	thanks https://css-tricks.com/responsive-iframes/
+*/
+lite-dailymotion::after {
+	content: '';
+	display: block;
+	padding-bottom: calc(100% / (16 / 9));
+}
+lite-dailymotion > iframe {
+	all: unset !important;
+	width: 100% !important;
+	height: 100% !important;
+	position: absolute !important;
+	inset: 0 !important;
+	border: 0 !important;
+}
+
+/* play button */
+lite-dailymotion > .ltd-playbtn {
+	content: '';
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	background: transparent;
+	outline: 0;
+	border: 0;
+	cursor: pointer;
+}
+
+lite-dailymotion > .ltd-playbtn::before {
+	width: 6.5em;
+	height: 4em;
+	background: rgba(0, 0, 0, 0.75);
+	opacity: 0.8;
+	border-radius: 0.5rem;
+	transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+lite-dailymotion > .ltd-playbtn:focus::before {
+	outline: auto;
+}
+lite-dailymotion:hover > .ltd-playbtn::before {
+	background-color: #0066dc;
+	opacity: 1;
+}
+/* play button triangle */
+lite-dailymotion > .ltd-playbtn::after {
+	border-style: solid;
+	border-width: 1em 0 1em 1.7em;
+	border-color: transparent transparent transparent #fff;
+}
+
+lite-dailymotion > .ltd-playbtn::before,
+lite-dailymotion > .ltd-playbtn::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate3d(-50%, -50%, 0);
+}
+
+/* Post-click styles */
+lite-dailymotion.ltd-activated::before,
+lite-dailymotion.ltd-activated > .ltd-playbtn {
+	cursor: unset;
+	opacity: 0;
+	pointer-events: none;
+}

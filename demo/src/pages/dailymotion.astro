@@ -1,0 +1,34 @@
+---
+import { Dailymotion } from '@coderty/astro-embed-dailymotion';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Dailymotion component examples">
+	<h2>With just the ID</h2>
+	<p><code>&lt;Dailymotion id="x8oz9jd" /&gt;</code></p>
+	<Dailymotion id="x8oz9jd" />
+
+	<h2>With a full dailymotion.com URL</h2>
+	<p>
+		<code>&lt;Dailymotion id="https://www.dailymotion.com/video/x8oz9jd" /&gt;</code>
+	</p>
+	<Dailymotion id="https://www.dailymotion.com/video/x8oz9jd" />
+
+	<h2>With a short dai.ly URL</h2>
+	<p>
+		<code>&lt;Dailymotion id="https://dai.ly/x8oz9jd" /&gt;</code>
+	</p>
+	<Dailymotion id="https://dai.ly/x8oz9jd" />
+
+	<h2>With embed URL format</h2>
+	<p>
+		<code>&lt;Dailymotion id="https://www.dailymotion.com/embed/video/x8oz9jd" /&gt;</code>
+	</p>
+	<Dailymotion id="https://www.dailymotion.com/embed/video/x8oz9jd" />
+
+	<h2>With custom parameters</h2>
+	<p>
+		<code>&lt;Dailymotion id="x8oz9jd" params="mute=1" /&gt;</code>
+	</p>
+	<Dailymotion id="x8oz9jd" params="mute=1" />
+</Base>
