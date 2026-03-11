@@ -38,7 +38,7 @@
     "@astro-community/astro-embed-link-preview": "^0.2.3",
     "@astro-community/astro-embed-twitter": "^0.5.9",
     "@astro-community/astro-embed-vimeo": "^0.3.11",
-    "@astro-community/astro-embed-youtube": "^0.5.9",
+    "@coderty/astro-embed-youtube": "^0.5.10",
     "@coderty/astro-embed-dailymotion": "^0.1.0"
   },
   "peerDependencies": {

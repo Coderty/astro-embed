@@ -16,7 +16,7 @@
     "@astro-community/astro-embed-link-preview": "workspace:*",
     "@astro-community/astro-embed-twitter": "workspace:*",
     "@astro-community/astro-embed-vimeo": "workspace:*",
-    "@astro-community/astro-embed-youtube": "workspace:*",
+    "@coderty/astro-embed-youtube": "workspace:*",
     "@astrojs/starlight": "^0.36.0",
     "astro": "^5.15.9",
     "astro-embed": "workspace:*",
