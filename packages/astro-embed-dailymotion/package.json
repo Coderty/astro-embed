@@ -31,7 +31,7 @@
     "url": "https://github.com/coderty/astro-embed/issues"
   },
   "homepage": "https://astro-embed.netlify.app/components/dailymotion/",
-  "peerDependencies": {
-    "astro": "^2.0.0 || ^3.0.0-beta || ^4.0.0-beta || ^5.0.0-beta"
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

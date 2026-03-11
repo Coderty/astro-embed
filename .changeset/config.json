@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@2.0.0/schema.json",
   "changelog": [
     "@changesets/changelog-github",
-    { "repo": "astro-community/astro-embed" }
+    { "repo": "Coderty/astro-embed" }
   ],
   "commit": false,
   "fixed": [],
@@ -10,5 +10,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@astro-community/astro-embed-demo", "@astro-community/astro-embed-docs"]
+  "ignore": ["@astro-community/astro-embed-demo", "@astro-community/astro-embed-docs", "@astro-community/astro-embed-baseline-status", "@astro-community/astro-embed-bluesky", "@astro-community/astro-embed-integration", "@astro-community/astro-embed-link-preview", "@astro-community/astro-embed-twitter", "@astro-community/astro-embed-utils", "@astro-community/astro-embed-vimeo", "astro-embed"]
 }

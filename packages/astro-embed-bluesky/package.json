@@ -35,5 +35,6 @@
   "dependencies": {
     "@atproto/api": "^0.13.14",
     "ts-pattern": "^5.5.0"
-  }
+  },
+  "private": true
 }
