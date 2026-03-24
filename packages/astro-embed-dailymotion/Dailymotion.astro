@@ -11,6 +11,17 @@ export interface Props extends astroHTML.JSX.HTMLAttributes {
 	params?: string;
 	/** Label for the button that will play the video. Default label: `'Play'` */
 	playlabel?: string;
+	/**
+	 * Dailymotion Player ID for monetization attribution.
+	 * When provided, uses `geo.dailymotion.com/player/{playerId}.html?video=...` instead of the generic embed URL.
+	 * See https://developers.dailymotion.com/player/
+	 */
+	playerId?: string;
+	/**
+	 * Value for the `allow` attribute of the generated iframe.
+	 * Defaults to `"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"`.
+	 */
+	iframeAllow?: string;
 }
 
 const {
@@ -18,6 +29,8 @@ const {
 	poster,
 	params = '',
 	playlabel = 'Play',
+	playerId,
+	iframeAllow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture',
 	style,
 	...attrs
 } = Astro.props as Props;
@@ -44,6 +57,8 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 <lite-dailymotion
 	data-id={videoid}
 	data-params={searchParams.toString()}
+	data-player-id={playerId}
+	data-iframe-allow={iframeAllow}
 	style={styles.join(';')}
 	{...attrs}
 >
@@ -116,14 +131,16 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 			this.classList.add('ltd-activated');
 
 			const params = new URLSearchParams(this.dataset.params || []);
+			const playerId = this.dataset.playerId;
 
 			const iframeEl = document.createElement('iframe');
 			iframeEl.width = '640';
 			iframeEl.height = '360';
-			iframeEl.allow =
-				'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+			iframeEl.allow = this.dataset.iframeAllow || 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
 			iframeEl.allowFullscreen = true;
-			iframeEl.src = `https://www.dailymotion.com/embed/video/${this.videoId}?${params.toString()}`;
+			iframeEl.src = playerId
+				? `https://geo.dailymotion.com/player/${playerId}.html?video=${this.videoId}&${params.toString()}`
+				: `https://www.dailymotion.com/embed/video/${this.videoId}?${params.toString()}`;
 			this.append(iframeEl);
 		}
 	}
