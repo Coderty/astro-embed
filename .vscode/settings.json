@@ -4,5 +4,8 @@
     "source.fixAll": "explicit"
   },
   "cSpell.words": ["Astro"],
-  "prettier.documentSelectors": ["**/*.astro"]
+  "prettier.documentSelectors": ["**/*.astro"],
+  "yaml.schemas": {
+    "https://www.artillery.io/schema.json": []
+  }
 }
