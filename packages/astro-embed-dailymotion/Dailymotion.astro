@@ -22,6 +22,8 @@ export interface Props extends astroHTML.JSX.HTMLAttributes {
 	 * Defaults to `"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"`.
 	 */
 	iframeAllow?: string;
+	/** When true, the video auto-plays muted on page load without requiring a click. */
+	autoplay?: boolean;
 }
 
 const {
@@ -32,6 +34,7 @@ const {
 	playerId,
 	iframeAllow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture',
 	style,
+	autoplay = false,
 	...attrs
 } = Astro.props as Props;
 
@@ -48,6 +51,9 @@ const posterURL = poster || `https://www.dailymotion.com/thumbnail/video/${video
 
 const searchParams = new URLSearchParams(params);
 searchParams.append('autoplay', '1');
+if (autoplay) {
+	searchParams.set('mute', '1');
+}
 
 const styles = [];
 if (style) styles.push(style);
@@ -59,6 +65,7 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 	data-params={searchParams.toString()}
 	data-player-id={playerId}
 	data-iframe-allow={iframeAllow}
+	data-autoplay={autoplay || undefined}
 	style={styles.join(';')}
 	{...attrs}
 >
@@ -81,7 +88,10 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 			});
 
 			// Once the user clicks, add the real iframe and drop our play button
-			this.addEventListener('click', (e) => this.addIframe(e));
+			this.addEventListener('click', (e) => {
+				e.preventDefault();
+				this.activate();
+			});
 
 			// Progressively enhance the link to the Dailymotion as a play button.
 			const playLink = this.querySelector('a');
@@ -93,6 +103,10 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 					playLink.getAttribute('aria-label')!
 				);
 				playLink.replaceWith(playBtn);
+			}
+
+			if (this.dataset.autoplay !== undefined) {
+				this.activate();
 			}
 		}
 
@@ -125,9 +139,8 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 			LiteDailymotion.preconnected = true;
 		}
 
-		addIframe(e: MouseEvent): void {
+		activate(): void {
 			if (this.classList.contains('ltd-activated')) return;
-			e.preventDefault();
 			this.classList.add('ltd-activated');
 
 			const params = new URLSearchParams(this.dataset.params || []);
