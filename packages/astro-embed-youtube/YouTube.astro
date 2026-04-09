@@ -79,6 +79,9 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 )}
 
 <style is:global>
+	lite-youtube.lyt-activated {
+		pointer-events: none;
+	}
 	lite-youtube > iframe {
 		all: unset !important;
 		width: 100% !important;
@@ -86,5 +89,6 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 		position: absolute !important;
 		inset: 0 !important;
 		border: 0 !important;
+		pointer-events: auto !important;
 	}
 </style>

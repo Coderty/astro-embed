@@ -23,6 +23,7 @@ lite-dailymotion > iframe {
 	position: absolute !important;
 	inset: 0 !important;
 	border: 0 !important;
+	pointer-events: auto !important;
 }
 
 /* play button */
@@ -69,6 +70,9 @@ lite-dailymotion > .ltd-playbtn::after {
 }
 
 /* Post-click styles */
+lite-dailymotion.ltd-activated {
+	pointer-events: none;
+}
 lite-dailymotion.ltd-activated::before,
 lite-dailymotion.ltd-activated > .ltd-playbtn {
 	cursor: unset;
