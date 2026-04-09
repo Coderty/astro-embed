@@ -8,6 +8,7 @@ export interface Props extends astroHTML.JSX.HTMLAttributes {
 	posterQuality?: 'max' | 'high' | 'default' | 'low';
 	params?: string;
 	playlabel?: string;
+	autoplay?: boolean;
 }
 
 const {
@@ -16,8 +17,16 @@ const {
 	posterQuality = 'default',
 	title,
 	style,
+	autoplay = false,
+	params: rawParams = '',
 	...attrs
 } = Astro.props as Props;
+
+const params = new URLSearchParams(rawParams);
+if (autoplay) {
+	params.set('mute', '1');
+}
+const paramsString = params.toString();
 
 const idRegExp = /^[A-Za-z0-9-_]+$/;
 
@@ -47,6 +56,8 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 	{videoid}
 	{title}
 	data-title={title}
+	params={paramsString || undefined}
+	data-autoplay={autoplay || undefined}
 	{...attrs}
 	style={styles.join(';')}
 >
@@ -56,6 +67,16 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 </lite-youtube>
 
 <script src="lite-youtube-embed"></script>
+
+{autoplay && (
+	<script is:inline>
+		customElements.whenDefined('lite-youtube').then(function() {
+			document.querySelectorAll('lite-youtube[data-autoplay]').forEach(function(el) {
+				/** @type {any} */ (el).activate();
+			});
+		});
+	</script>
+)}
 
 <style is:global>
 	lite-youtube > iframe {
