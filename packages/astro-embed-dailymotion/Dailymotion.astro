@@ -106,7 +106,15 @@ if (posterURL) styles.push(`background-image: url('${posterURL}')`);
 			}
 
 			if (this.dataset.autoplay !== undefined) {
-				this.activate();
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							this.activate();
+							observer.unobserve(this);
+						}
+					});
+				}, { threshold: 0.5 });
+				observer.observe(this);
 			}
 		}
 

@@ -1,6 +1,6 @@
 {
   "name": "@coderty/astro-embed-dailymotion",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "(Coderty Fork) - Component to easily embed Dailymotion videos on your Astro site",
   "type": "module",
   "exports": {
